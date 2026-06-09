@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AL - 日常生活助手</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app" class="app">
+        <!-- 导航栏 -->
+        <nav class="navbar">
+            <div class="navbar-container">
+                <div class="navbar-brand">
+                    <span class="logo">🎯</span>
+                    <h1>AL 助手</h1>
+                </div>
+                <div class="navbar-menu">
+                    <button class="nav-btn active" data-tab="todo">📋 待办</button>
+                    <button class="nav-btn" data-tab="schedule">📅 日程</button>
+                    <button class="nav-btn" data-tab="expense">💰 支出</button>
+                    <button class="nav-btn" data-tab="habit">🎯 习惯</button>
+                    <button class="nav-btn" data-tab="stats">📊 统计</button>
+                </div>
+                <button class="theme-toggle" id="themeToggle">🌙</button>
+            </div>
+        </nav>
+
+        <!-- 主容器 -->
+        <main class="main-container">
+            <!-- 待办事项标签页 -->
+            <section id="todo" class="tab-content active">
+                <div class="section-header">
+                    <h2>📋 待办事项</h2>
+                    <p class="subtitle">管理您的日常任务</p>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="todoInput" placeholder="输入新任务..." class="input-field">
+                    <select id="todoCategory" class="category-select">
+                        <option value="work">工作</option>
+                        <option value="life">生活</option>
+                        <option value="health">健康</option>
+                        <option value="learning">学习</option>
+                    </select>
+                    <button class="btn btn-primary" id="addTodoBtn">添加</button>
+                </div>
+                <div id="todoList" class="todo-list"></div>
+                <div class="stats-bar">
+                    <span>总任务: <strong id="todoCount">0</strong></span>
+                    <span>已完成: <strong id="todoCompleted">0</strong></span>
+                    <span>进度: <strong id="todoProgress">0%</strong></span>
+                </div>
+            </section>
+
+            <!-- 日程标签页 -->
+            <section id="schedule" class="tab-content">
+                <div class="section-header">
+                    <h2>📅 日程安排</h2>
+                    <p class="subtitle">规划您的每一天</p>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="scheduleTitle" placeholder="事件标题..." class="input-field">
+                    <input type="datetime-local" id="scheduleTime" class="input-field">
+                    <input type="text" id="scheduleLocation" placeholder="地点..." class="input-field">
+                    <button class="btn btn-primary" id="addScheduleBtn">添加日程</button>
+                </div>
+                <div id="scheduleList" class="schedule-list"></div>
+            </section>
+
+            <!-- 支出记录标签页 -->
+            <section id="expense" class="tab-content">
+                <div class="section-header">
+                    <h2>💰 支出记录</h2>
+                    <p class="subtitle">记录和管理您的开支</p>
+                </div>
+                <div class="input-group">
+                    <input type="number" id="expenseAmount" placeholder="金额..." class="input-field">
+                    <select id="expenseCategory" class="category-select">
+                        <option value="food">食物</option>
+                        <option value="transport">交通</option>
+                        <option value="shopping">购物</option>
+                        <option value="entertainment">娱乐</option>
+                        <option value="other">其他</option>
+                    </select>
+                    <input type="text" id="expenseNote" placeholder="备注..." class="input-field">
+                    <button class="btn btn-primary" id="addExpenseBtn">记录</button>
+                </div>
+                <div class="expense-summary">
+                    <div class="summary-card">
+                        <h3>今日支出</h3>
+                        <p class="amount" id="todayExpense">¥0.00</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>本月支出</h3>
+                        <p class="amount" id="monthExpense">¥0.00</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>平均每天</h3>
+                        <p class="amount" id="avgExpense">¥0.00</p>
+                    </div>
+                </div>
+                <div id="expenseList" class="expense-list"></div>
+            </section>
+
+            <!-- 习惯追踪标签页 -->
+            <section id="habit" class="tab-content">
+                <div class="section-header">
+                    <h2>🎯 习惯追踪</h2>
+                    <p class="subtitle">养成良好习惯</p>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="habitName" placeholder="习惯名称（如：运动、阅读）..." class="input-field">
+                    <select id="habitFrequency" class="category-select">
+                        <option value="daily">每日</option>
+                        <option value="weekly">每周</option>
+                        <option value="monthly">每月</option>
+                    </select>
+                    <button class="btn btn-primary" id="addHabitBtn">创建习惯</button>
+                </div>
+                <div id="habitList" class="habit-list"></div>
+            </section>
+
+            <!-- 统计分析标签页 -->
+            <section id="stats" class="tab-content">
+                <div class="section-header">
+                    <h2>📊 数据统计</h2>
+                    <p class="subtitle">查看您的数据分析</p>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>📋 任务完成率</h3>
+                        <div class="stat-value" id="statTodoRate">0%</div>
+                        <div class="progress-bar">
+                            <div class="progress" id="statTodoProgress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>🎯 习惯坚持</h3>
+                        <div class="stat-value" id="statHabitStreak">0天</div>
+                        <p id="statHabitInfo">无活跃习惯</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>💰 支出分析</h3>
+                        <div class="stat-value" id="statExpenseMonth">¥0.00</div>
+                        <p id="statExpenseInfo">本月总支出</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>📅 日程安排</h3>
+                        <div class="stat-value" id="statScheduleCount">0</div>
+                        <p id="statScheduleInfo">即将到来</p>
+                    </div>
+                </div>
+                <button class="btn btn-secondary" id="exportDataBtn">📥 导出数据</button>
+                <button class="btn btn-secondary" id="clearDataBtn">🗑️ 清空所有数据</button>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
